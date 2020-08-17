@@ -37,7 +37,7 @@ app.use(cors())
 app.use(express.static('uploads')) // static
 
 const url = 'mongodb://localhost:27017/july'
-mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser// change name photoFile on user._id: true })
   .then(() => console.log('Data Base is Connected!'))
   .catch(err => {
     console.log(err)
@@ -74,7 +74,7 @@ app.get('/api/companies', async function (req, res) { // get companies
   })
 })
 
-app.post('/api/users', function (req, res) { // here we come from saveUser ?
+app.post('/api/users', function (req, res) { // here we come from "saveUser"
   if (!req.body) return res.sendStatus(400)
   const userName = req.body.name
   const idCompany = req.body.company
@@ -84,13 +84,10 @@ app.post('/api/users', function (req, res) { // here we come from saveUser ?
     company: [{ _id: idCompany }],
     photoName: req.body.photo
   })
-  console.log('user before save  mongoose ', user)
   user.save(async function (err) {
     if (err) return console.log(err)
-    // change name photoFile on user._id
-    user.photoName = `${user._id}.${_.last(parsedFileName)}`
+    user.photoName = `${user._id}.${_.last(parsedFileName)}` // change name photoFile on user._id
     await user.save()
-    console.log('New User  POSTed ! ', user) /// here "user" absolutly formed
     res.json(user)
   })
 })
@@ -101,12 +98,8 @@ app.post('/uploads', function (req, res) { // PUTing photo on server
     return res.status(400).send('NO files where uploaded!')
   }
   const photoFile = req.files.photoFile
-  console.log('PhotoFile in POST : ', photoFile)
   const parsedFileName = (req.files.photoFile.name).split('.')
-  console.log('parsedFileName in POST : ', parsedFileName)
   const userID = req.body.userID
-  console.log('userID in POST : ', userID)
-
   fs.writeFile(`uploads/${userID}.${_.last(parsedFileName)}`, photoFile.data, (err) => {
     if (err) throw err
     console.log('The file has been saved!')
