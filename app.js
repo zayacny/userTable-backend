@@ -37,7 +37,7 @@ app.use(cors())
 app.use(express.static('uploads')) // static
 
 const url = 'mongodb://localhost:27017/july'
-mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser// change name photoFile on user._id: true })
+mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => console.log('Data Base is Connected!'))
   .catch(err => {
     console.log(err)
@@ -60,7 +60,7 @@ app.get('/api/users', function (req, res) { // get USERS
       if (err) console.log(err)
       users = _.map(users, (item) => {
         item.company = _.head(item.company)
-        item.photoName = `${item._id}.${_.last(item.photoName.split('.'))}`
+        item.photoName = `${item._id}.${_.last(item.photoName.split('.'))}` // change name photoFile on user._id
         return item
       })
       return res.json(users)
