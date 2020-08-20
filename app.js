@@ -43,7 +43,7 @@ mongoose.connect(url, { useUnifiedTopology: true, useNewUrlParser: true })
     console.log(err)
   })
 
-app.get('/api/users/:id', function (req, res) { // her we come from "getUser"
+app.get('/api/users/:id', function (req, res) { //came from "getUser" function
   const id = req.params.id
   User.findById(id)
     .exec((err, user) => {
@@ -54,7 +54,7 @@ app.get('/api/users/:id', function (req, res) { // her we come from "getUser"
 
 app.get('/api/users', function (req, res) { // get USERS
   User.find()
-    .populate('company') // open\append companies
+    .populate('company') // open/append companies 
     .lean() // parse to JSON
     .exec((err, users) => {
       if (err) console.log(err)
@@ -74,7 +74,7 @@ app.get('/api/companies', async function (req, res) { // get companies
   })
 })
 
-app.post('/api/users', function (req, res) { // here we come from "saveUser"
+app.post('/api/users', function (req, res) { // came from "saveUser" function
   if (!req.body) return res.sendStatus(400)
   const userName = req.body.name
   const idCompany = req.body.company
@@ -92,7 +92,7 @@ app.post('/api/users', function (req, res) { // here we come from "saveUser"
   })
 })
 
-app.post('/uploads', function (req, res) { // PUTing photo on server
+app.post('/uploads', function (req, res) { // load photo on server
 
   if (!req.files || Object.keys(req.files).length === 0) {
     return res.status(400).send('NO files where uploaded!')
@@ -107,7 +107,7 @@ app.post('/uploads', function (req, res) { // PUTing photo on server
   return res.sendStatus(200)
 })
 
-app.delete('/api/users/:id', function (req, res) {
+app.delete('/api/users/:id', function (req, res) { // delete user 
   const id = req.params.id
   User.findByIdAndDelete(id, function (err, user) {
     if (err) return console.log(err)
@@ -115,7 +115,7 @@ app.delete('/api/users/:id', function (req, res) {
   })
 })
 
-app.put('/api/users/:id/', function (req, res) {
+app.put('/api/users/:id/', function (req, res) { // update user record
   const id = req.params.id
   const newName = req.body.name
   const idCompany = req.body.company
